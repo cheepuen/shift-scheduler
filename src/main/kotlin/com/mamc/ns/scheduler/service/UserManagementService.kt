@@ -1,5 +1,8 @@
 package com.mamc.ns.scheduler.service
 
+import org.springframework.stereotype.Component
+
+@Component
 class UserManagementService {
 	
 	enum class OperationResultEnum{SUCCESS, FAIL}
