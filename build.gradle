@@ -2,9 +2,14 @@ buildscript {
 	ext {
 		kotlinVersion = '1.1.2'
 		springBootVersion = '1.5.3.RELEASE'
+		droolsVersion = '6.1.0.Final'
+		optaplannerVersion = '7.0.0.Final'
 	}
 	repositories {
 		mavenCentral()
+		maven {
+        		url 'https://repository.jboss.org/nexus/content/groups/public/'
+    		}
 	}
 	dependencies {
 		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
@@ -29,7 +34,11 @@ compileTestKotlin {
 }
 
 repositories {
+	
 	mavenCentral()
+	maven {
+		url 'https://repository.jboss.org/nexus/content/groups/public/'
+	}
 }
 
 configurations {
@@ -45,4 +54,13 @@ dependencies {
 	compile("org.jetbrains.kotlin:kotlin-reflect:${kotlinVersion}")
 	providedRuntime('org.springframework.boot:spring-boot-starter-tomcat')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
+	compile "org.kie:kie-api:${droolsVersion}"
+    	compile "org.drools:drools-compiler:${droolsVersion}"
+    	compile "ch.qos.logback:logback-classic:1.1.+"
+    	compile "org.slf4j:slf4j-api:1.7.+"
+	compile "org.optaplanner:optaplanner-core:${optaplannerVersion}"
+}
+
+task showMeCache << {
+  configurations.compile.each { println it }
 }

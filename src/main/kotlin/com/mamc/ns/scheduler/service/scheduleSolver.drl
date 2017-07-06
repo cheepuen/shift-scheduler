@@ -1,0 +1,23 @@
+import com.mamc.ns.scheduler.domain.Employee
+import com.mamc.ns.scheduler.domain.Schedule
+import com.mamc.ns.scheduler.domain.Shift
+
+global HardSoftScoreHolder scoreHolder;
+
+// ############################################################################
+// Hard constraints
+// ############################################################################
+
+rule "shift-total"
+    when
+        $shift : Shift($cpuPower : cpuPower)
+        accumulate(
+            CloudProcess(
+                computer == $computer,
+                $requiredCpuPower : requiredCpuPower);
+            $requiredCpuPowerTotal : sum($requiredCpuPower);
+            $requiredCpuPowerTotal > $cpuPower
+        )
+    then
+        scoreHolder.addHardConstraintMatch(kcontext, $cpuPower - $requiredCpuPowerTotal);
+end
